@@ -1,7 +1,6 @@
 @import "./Colors.css";
 
-root,
-[data-theme="light"] {
+html[data-theme="light"] {
     --bg-color: #d6dfdc;
     --header-text-color: var(--darkness);
     --header-button-text: var(--darkness);
@@ -21,7 +20,7 @@ root,
     --dashboard-btn-tooltip-text: #fff;
 }
 
-[data-theme="dark"] {
+html[data-theme="dark"] {
     --bg-color: var(--darkness);
     --header-text-color: var(--coolYellow);
     --header-button-text: var(--coolYellow);

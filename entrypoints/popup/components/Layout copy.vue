@@ -1,19 +1,16 @@
 <script setup>
-import Headers from './Headers.vue';
-import SideBar from './SideBar.vue';
+import Headers from "./Headers.vue";
+import SideBar from "./SideBar.vue";
 </script>
 
 <template>
     <div id="App" class="light" data-theme="light">
         <div id="Layout">
-            <Headers/>
+            <Headers />
             <div id="Container">
-                <SideBar/>
+                <SideBar />
                 <div id="BoardContainer">
                     <div id="Board" data-testid="Board">
-
-
-
                         <!-- <div class="react-grid-layout layout" style="height: 1630px;">
                             <div data-testid="Widget"
                                 class="react-grid-item react-draggable cssTransforms react-resizable"
@@ -281,7 +278,7 @@ import SideBar from './SideBar.vue';
                                         <div id="tradingview_widget_wrapper">
                                             <div>
                                                 <div style="width: 100%; height: 126px;">
-                                            
+
                                                   <iframe scrolling="no" allowtransparency="true"
                                                         frameborder="0"
                                                         src="https://www.tradingview-widget.com/embed-widget/single-quote/?locale=en#%7B%22symbol%22%3A%22BTCUSDT%22%2C%22width%22%3A%22100%25%22%2C%22colorTheme%22%3A%22light%22%2C%22isTransparent%22%3Atrue%2C%22height%22%3A126%2C%22utm_source%22%3A%22in.vester.app%22%2C%22utm_medium%22%3A%22widget%22%2C%22utm_campaign%22%3A%22single-quote%22%2C%22page-uri%22%3A%22in.vester.app%2F%22%7D"
@@ -603,14 +600,9 @@ import SideBar from './SideBar.vue';
                                     class="react-resizable-handle react-resizable-handle-e"></span>
                             </div>
                         </div> -->
-
-
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
-
 </template>
-
