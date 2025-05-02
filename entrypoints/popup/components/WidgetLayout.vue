@@ -1,66 +1,54 @@
 <script setup>
 import Headers from "./Headers.vue";
 import SideBar from "./SideBar.vue";
-import { reactive, watch, onMounted } from "vue";
+import { watch, onMounted, effect } from "vue";
 import { GridLayout, GridItem } from "vue-grid-layout-v3";
 import { useFullscreen } from '@vueuse/core'
-
 import { useRoute } from 'vue-router'
-import localForage from "localforage";
+// import localForage from "localforage";
+import { useLayoutStore } from "./LayoutStore.js"
+import { storeToRefs } from 'pinia'
+
+
+
+// components
 
 import CandleStickChart from "./Widgets/TechnicalAnalysis/CandleStickChart.vue";
 import SingleTicker from "./Widgets/Ticker/SingleTicker.vue";
 import YoutubeVideo from "./Widgets/Video/YoutubeVideo.vue";
+import TMSWidgets from "./Widgets/TMSWidgets.vue";
+import TickerTape from "./Widgets/Ticker/TickerTape.vue";
+import TopStories from "./Widgets/News/TopStories.vue";
+import FinancialDetails from "./Widgets/Ticker/FinancialDetails.vue";
+import IPOCorner from "./Widgets/News/IPOCorner.vue";
 
 const { isFullscreen } = useFullscreen()
 const route = useRoute()
-const gridLayout = ref(null)
+const widgetLayoutsStore = useLayoutStore()
+const { widgetLayouts } = storeToRefs(widgetLayoutsStore)
 
 
 watch(
     () => route.params.name,
     (newId, _) => {
         console.log(newId)
+        widgetLayoutsStore.initWidgetLayouts(route.params.name)
     }
 )
 
-onMounted(async () => {
-
-    const layoout = await localForage.getItem(`widget_${route.params.name}`)
-    gridLayout.value = JSON.parse(layoout)
+onMounted(() => {
+    widgetLayoutsStore.initWidgetLayouts(route.params.name)
 })
 
-// const state = ref({
-//     layout: [
-//         { x: 0, y: 0, w: 2, h: 4, i: "0", static: false },
-//         { x: 2, y: 0, w: 2, h: 4, i: "1", static: false },
 
-//     ],
-//     draggable: true,
-//     resizable: true,
-//     index: 0,
-// });
-
-
-
-
-
-// localForage.setItem(`widget_${route.params.name}`, JSON.stringify(state.value))
-function itemTitle(item) {
-    let result = item.i;
-    if (item.static) {
-        result += " - Static";
-    }
-    return result;
+function layoutUpdatedEvent(newLayout) {
+    widgetLayoutsStore.layoutUpdate(route.params.name, newLayout)
 }
 
-
-
-function layoutUpdatedEvent(newlayout) {
-    let layout = gridLayout.value
-    layout.layout = newlayout
-    localForage.setItem(`widget_${route.params.name}`, JSON.stringify(layout))
+function deleteWidget(item) {
+    widgetLayoutsStore.deleteWidget(route.params.name, item)
 }
+
 
 
 </script>
@@ -73,38 +61,44 @@ function layoutUpdatedEvent(newlayout) {
             <SideBar />
         </div>
 
-        <div style="height: 100vh;width: 100%;" :style="!isFullscreen && 'margin-left: 70px;'">
-            <GridLayout v-model:layout="gridLayout.layout" :col-num="12" :row-height="30"
-                :is-draggable="gridLayout.draggable" :is-resizable="gridLayout.resizable" :vertical-compact="true"
-                :use-css-transforms="true" @layout-updated="layoutUpdatedEvent" v-if="gridLayout">
+        <div style="height: 5000px !important;width: 100%;" :style="!isFullscreen && 'margin-left: 70px;'">
+            <GridLayout v-model:layout="widgetLayouts[route.params.name]" :col-num="12" :row-height="30" :is-draggable="true"
+                :is-resizable="true" :vertical-compact="true" :use-css-transforms="true"
+                @layout-updated="layoutUpdatedEvent" v-if="widgetLayouts && widgetLayouts[route.params.name]">
 
-
-                <GridItem v-for="(item, index) in gridLayout.layout" :key="index" :static="item.static" :x="item.x"
-                    :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-
-
-
+               
+                <GridItem v-for="(item, index) in widgetLayouts[route.params.name]" :key="index"
+                    :static="item.static" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
+                    
 
                     <div class="widget ChartBoxWidget">
-
                         <div class="header">
-                            <div class="widgetTitle">Prices</div>
+                            <div class="widgetTitle">{{ item.widgetTitle }}</div>
                             <div class="widgetButtons">
-                                <div style="cursor: pointer; padding-left: 5px;">
+                                <button style="cursor: pointer; padding-left: 5px;" @click="deleteWidget(item)">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round">
                                         <line x1="18" y1="6" x2="6" y2="18"></line>
                                         <line x1="6" y1="6" x2="18" y2="18"></line>
                                     </svg>
-                                </div>
+                                </button>
                             </div>
                         </div>
                         <div class="content">
 
-                            <YoutubeVideo />
+                            <SingleTicker v-if="item.type === 'single_ticker_widget'" />
+                            <YoutubeVideo v-if="item.type === 'youtube_video_embed'" :url="item.selected" />
+                            <CandleStickChart v-if="item.type === 'candle_stick_chart'" :symbol="item.selected" />
+                            <TickerTape v-if="item.type === 'ticker_tape'" />
+                            <TopStories v-if="item.type === 'top_stories'" />
+                            <FinancialDetails v-if="item.type === 'financial_details'" />
+                            <IPOCorner v-if="item.type === 'ipo_corner'" />
+                            <!-- <YoutubeVideo /> -->
                         </div>
                     </div>
+
+
                 </GridItem>
             </GridLayout>
         </div>

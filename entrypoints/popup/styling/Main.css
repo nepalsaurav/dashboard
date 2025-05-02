@@ -2,15 +2,17 @@
 
 
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
 body {
     background: var(--bg-color) !important;
-    font-family: "JetBrains Mono", monospace;
+    font-family: -apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif;
 }
 
 
 html {
     background: var(--bg-color) !important;
 }
+
 .navbar {
     background: var(--bg-color) !important;
     width: 100vw;
@@ -31,7 +33,7 @@ html {
 
 
 .menu {
-   
+
     background: var(--bg-color) !important;
 
     padding-top: 35px;
@@ -43,3 +45,5 @@ html {
 body.has-navbar-fixed-top {
     padding-top: 30px !important;
 }
+
+

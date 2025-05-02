@@ -1,18 +1,20 @@
 <script setup>
+import { useDark, useToggle } from '@vueuse/core'
+import { useFullscreen } from '@vueuse/core'
+
+
+
+// component import
 import AddIcons from "./icons/AddIcons.vue";
 import ClearIcons from "./icons/ClearIcons.vue";
 import DayIcons from "./icons/DayIcons.vue";
 import FullScreenIcons from "./icons/FullScreenIcons.vue";
 import NightIcons from "./icons/NightIcons.vue";
 import ResetIcons from "./icons/ResetIcons.vue";
+import AddWidget from "./AddWidget.vue";
 
-
-import { useDark, useToggle } from '@vueuse/core'
-
-import { useFullscreen } from '@vueuse/core'
 
 const { toggle } = useFullscreen()
-
 const isDark = useDark({
     selector: 'html',
     attribute: 'data-theme',
@@ -20,6 +22,7 @@ const isDark = useDark({
     valueLight: 'light',
 })
 const toggleDark = useToggle(isDark)
+const modalState = ref(false)
 
 function themeSwitch() {
     toggleDark()
@@ -27,6 +30,15 @@ function themeSwitch() {
 
 function switchFullScreen() {
     toggle()
+}
+
+
+function addWidget() {
+    modalState.value = true
+}
+
+function closeModalWidget() {
+    modalState.value = false;
 }
 </script>
 
@@ -46,7 +58,7 @@ function switchFullScreen() {
                     </button>
                 </div>
                 <div class="navbar-item">
-                    <button class="button is-small">
+                    <button class="button is-small" @click="addWidget">
                         <AddIcons /> Add Widget
                     </button>
                 </div>
@@ -76,6 +88,9 @@ function switchFullScreen() {
             </div>
         </div>
     </nav>
+
+
+    <AddWidget :modalState="modalState" :closeModal="closeModalWidget" />
 </template>
 
 <style>
