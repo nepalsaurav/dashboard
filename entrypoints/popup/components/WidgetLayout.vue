@@ -1,13 +1,14 @@
 <script setup>
 import Headers from "./Headers.vue";
 import SideBar from "./SideBar.vue";
-import { watch, onMounted, effect } from "vue";
+import { watch, onMounted } from "vue";
 import { GridLayout, GridItem } from "vue-grid-layout-v3";
 import { useFullscreen } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 // import localForage from "localforage";
 import { useLayoutStore } from "./LayoutStore.js"
 import { storeToRefs } from 'pinia'
+import { useApiStore } from "@/entrypoints/popup/api/ApiStore.js"
 
 
 
@@ -16,16 +17,19 @@ import { storeToRefs } from 'pinia'
 import CandleStickChart from "./Widgets/TechnicalAnalysis/CandleStickChart.vue";
 import SingleTicker from "./Widgets/Ticker/SingleTicker.vue";
 import YoutubeVideo from "./Widgets/Video/YoutubeVideo.vue";
-import TMSWidgets from "./Widgets/TMSWidgets.vue";
 import TickerTape from "./Widgets/Ticker/TickerTape.vue";
 import TopStories from "./Widgets/News/TopStories.vue";
 import FinancialDetails from "./Widgets/Ticker/FinancialDetails.vue";
-import IPOCorner from "./Widgets/News/IPOCorner.vue";
+import InnestmentCalendar from "./Widgets/News/InvestmentCalendar.vue";
+import GoogleCalendar from "./Widgets/Calendar/GoogleCalendar.vue";
+import SpotifyPlaylist from "./Widgets/Music/SpotifyPlaylist.vue";
+import HeatMap from "./Widgets/chart/HeatMap.vue";
 
 const { isFullscreen } = useFullscreen()
 const route = useRoute()
 const widgetLayoutsStore = useLayoutStore()
 const { widgetLayouts } = storeToRefs(widgetLayoutsStore)
+const apiStore = useApiStore()
 
 
 watch(
@@ -36,8 +40,13 @@ watch(
     }
 )
 
-onMounted(() => {
+onMounted(async() => {
     widgetLayoutsStore.initWidgetLayouts(route.params.name)
+
+
+
+    // run initial data
+    await apiStore.fetchInitialData()
 })
 
 
@@ -62,14 +71,14 @@ function deleteWidget(item) {
         </div>
 
         <div style="height: 5000px !important;width: 100%;" :style="!isFullscreen && 'margin-left: 70px;'">
-            <GridLayout v-model:layout="widgetLayouts[route.params.name]" :col-num="12" :row-height="30" :is-draggable="true"
-                :is-resizable="true" :vertical-compact="true" :use-css-transforms="true"
+            <GridLayout v-model:layout="widgetLayouts[route.params.name]" :col-num="12" :row-height="30"
+                :is-draggable="true" :is-resizable="true" :vertical-compact="true" :use-css-transforms="true"
                 @layout-updated="layoutUpdatedEvent" v-if="widgetLayouts && widgetLayouts[route.params.name]">
 
-               
-                <GridItem v-for="(item, index) in widgetLayouts[route.params.name]" :key="index"
-                    :static="item.static" :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
-                    
+
+                <GridItem v-for="(item, index) in widgetLayouts[route.params.name]" :key="index" :static="item.static"
+                    :x="item.x" :y="item.y" :w="item.w" :h="item.h" :i="item.i">
+
 
                     <div class="widget ChartBoxWidget">
                         <div class="header">
@@ -87,13 +96,16 @@ function deleteWidget(item) {
                         </div>
                         <div class="content">
 
-                            <SingleTicker v-if="item.type === 'single_ticker_widget'" />
+                            <SingleTicker v-if="item.type === 'single_ticker_widget'" :ticker="item.selected" />
                             <YoutubeVideo v-if="item.type === 'youtube_video_embed'" :url="item.selected" />
                             <CandleStickChart v-if="item.type === 'candle_stick_chart'" :symbol="item.selected" />
                             <TickerTape v-if="item.type === 'ticker_tape'" />
                             <TopStories v-if="item.type === 'top_stories'" />
                             <FinancialDetails v-if="item.type === 'financial_details'" />
-                            <IPOCorner v-if="item.type === 'ipo_corner'" />
+                            <InnestmentCalendar v-if="item.type === 'investment_calendar'" />
+                            <GoogleCalendar v-if="item.type === 'google_calendar'" :iframe="item.selected" />
+                            <SpotifyPlaylist v-if="item.type === 'spotify_playlist'" :iframe="item.selected" />
+                            <HeatMap v-if="item.type === 'stock_heatmap'" />
                             <!-- <YoutubeVideo /> -->
                         </div>
                     </div>

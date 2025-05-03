@@ -1,7 +1,7 @@
 <script setup>
 import { useDark, useToggle } from '@vueuse/core'
 import { useFullscreen } from '@vueuse/core'
-
+import { onMounted } from 'vue';
 
 
 // component import
@@ -12,6 +12,8 @@ import FullScreenIcons from "./icons/FullScreenIcons.vue";
 import NightIcons from "./icons/NightIcons.vue";
 import ResetIcons from "./icons/ResetIcons.vue";
 import AddWidget from "./AddWidget.vue";
+import { storage } from '#imports';
+import { useApiStore } from "@/entrypoints/popup/api/ApiStore.js"
 
 
 const { toggle } = useFullscreen()
@@ -23,9 +25,36 @@ const isDark = useDark({
 })
 const toggleDark = useToggle(isDark)
 const modalState = ref(false)
+const currentTime = ref(new Date())
+const timeOptions = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+};
+const apiStore = useApiStore()
+
+onMounted(() => {
+    setInterval(() => {
+        currentTime.value = new Date()
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes()
+
+        if (hours === 11 && minutes === 0) {
+            apiStore.reFetchMarketStatus()
+        }
+    }, 1000)
+})
 
 function themeSwitch() {
     toggleDark()
+
+    const theme = isDark.value ? "dark" : "light"
+    storage.setItem("local:theme", theme)
 }
 
 function switchFullScreen() {
@@ -54,7 +83,7 @@ function closeModalWidget() {
                 <div class="navbar-item">
                     <button class="button is-small" @click="themeSwitch">
                         <DayIcons v-if="!isDark" />
-                        <NightIcons v-else/>
+                        <NightIcons v-else />
                     </button>
                 </div>
                 <div class="navbar-item">
@@ -83,7 +112,7 @@ function closeModalWidget() {
                 </div>
 
                 <div class="navbar-item">
-                    <small>April 30, 2025 at 5:12:34 PM</small>
+                    <small>{{ currentTime.toLocaleString("en-US", timeOptions) }}</small>
                 </div>
             </div>
         </div>

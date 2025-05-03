@@ -82,14 +82,57 @@ export const widgetOptions = [
         widgetTitle: "Financial Details"
     },
     {
-        type: "ipo_corner",
-        label: "IPO Corner",
+        type: "investment_calendar",
+        label: "Investment Calendar",
         isSelect: false,
         x: 0, 
         y: 0, 
         w: 6, 
         h: 6,
         static: false,
-        widgetTitle: "IPO Corner"
+        widgetTitle: "Investment Calendar"
+    },
+
+
+    {
+        type: "google_calendar",
+        label: "Google Calendar",
+        isSelect: true,
+        selectPlaceHolder: "enter iframe",
+        alertPlaceholder: "please enter iframe",
+        selectOptions: [],
+        x: 0, 
+        y: 0, 
+        w: 8, 
+        h: 8,
+        static: false,
+        widgetTitle: "Google Calendar"
+    },
+
+    {
+        type: "spotify_playlist",
+        label: "Spotify Playlist",
+        isSelect: true,
+        selectPlaceHolder: "enter iframe",
+        alertPlaceholder: "please enter iframe",
+        selectOptions: [],
+        x: 0, 
+        y: 0, 
+        w: 8, 
+        h: 8,
+        static: false,
+        widgetTitle: "Spotify Playlist"
+    },
+
+    {
+        type: "stock_heatmap",
+        label: "Stock Heatmap",
+        isSelect: false,
+        x: 0, 
+        y: 0, 
+        w: 12, 
+        h: 21,
+        static: false,
+        widgetTitle: "Stock Heatmap"
     },
 ]

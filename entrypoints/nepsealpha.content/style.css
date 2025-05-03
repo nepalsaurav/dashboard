@@ -1,0 +1,15 @@
+body {
+    display: none;
+}
+
+
+
+
+body.dark-nepse .secondary--text {
+    background-color: black;
+    color: #fff;
+}
+
+body.dark-nepse .secondary--text:hover {
+    opacity: 0.8;
+}

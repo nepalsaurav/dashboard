@@ -9,6 +9,11 @@ const { width } = useWindowSize();
 const href = window.location.href;
 
 
+
+// run some of the intial data
+
+
+
 </script>
 
 <template>

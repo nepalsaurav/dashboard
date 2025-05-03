@@ -12,6 +12,11 @@
           {
             "header": "x-xss-protection",
             "operation": "remove"
+          },
+          {
+            "header": "Access-Control-Allow-Origin",
+            "operation": "set",
+            "value": "*"
           }
         ]
       },

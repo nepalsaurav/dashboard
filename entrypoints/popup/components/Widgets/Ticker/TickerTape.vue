@@ -1,586 +1,113 @@
+<script setup>
+import { ref, onMounted } from 'vue';
+import LoadingSkeletons from '../../LoadingSkeletons.vue';
+import { getTickerTape } from '../../../api/TickerTape.js'
+
+import { useApiStore } from "@/entrypoints/popup/api/ApiStore.js"
+import { storeToRefs } from 'pinia';
+
+
+const tickers = ref(null)
+const loading = ref(true)
+const error = ref(null)
+const apiStore = useApiStore()
+const { marketStatus } = storeToRefs(apiStore)
+
+async function fetchData() {
+    const data = await getTickerTape()
+    tickers.value = data
+    console.log(tickers.value)
+}
+
+
+onMounted(async() => {
+    await fetchData()
+    loading.value = false
+
+    if (marketStatus.value === "Market open") {
+        setInterval(async() => {
+            try {
+                await fetchData()
+            } catch {
+
+            }
+        }, 5000)
+    }
+
+})
+
+// const tickers = [
+//   {
+//     name: 'Ethereum',
+//     symbol: 'ETHUSD',
+//     logo: 'https://s3-symbol-logo.tradingview.com/crypto/XTVCETH.svg',
+//     price: '1,825.4',
+//     change: -13.6,
+//     percent: '-0.74%',
+//     link: 'https://www.tradingview.com/symbols/BITSTAMP-ETHUSD/?utm_campaign=ticker-tape&utm_medium=widget_new&utm_source=www.tradingview.com',
+//   },
+  
+// ];
+</script>
+
 <template>
-
-    <body class="tv-display-mode-compact">
-       
-        <div class="tv-embed-widget-wrapper">
-            <div class="tv-embed-widget-wrapper__header js-embed-widget-head"></div>
-            <div class="tv-embed-widget-wrapper__body js-embed-widget-body">
-                <div id="widget-ticker-tape-container">
-                    <div class="tickerTape-N_kypjt9">
-                       
-                        <div class="tape-N_kypjt9">
-                            <div class="head-N_kypjt9"><a
-                                    class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-SPXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 134.547px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">S&amp;P 500
-                                                        Index</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">5,627.5</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+39.40</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.71%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-NSXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 148.609px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/nasdaq-100.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">US 100 Cash
-                                                        CFD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last tv-ticker-item-tape__last--falling">19,837.1</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+138.30</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.70%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
-                                    href="https://www.tradingview.com/symbols/FX_IDC-EURUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 144.078px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><span
-                                                        class="pair-ocURKVwI xxxsmall-ocURKVwI tv-ticker-item-tape__icon">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/US.svg"
-                                                            alt="">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/EU.svg"
-                                                            alt="">
-                                                    </span></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">EUR to USD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1.13444</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+0.01</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.51%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-BTCUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 116.953px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Bitcoin</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">96,817</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+282.00</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.29%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-ETHUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 120.391px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Ethereum</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1,825.4</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--down">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">−13.6</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(−0.74%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a></div>
-                            <div class="tail-N_kypjt9"><a
-                                    class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-SPXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 134.547px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">S&amp;P 500
-                                                        Index</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">5,627.5</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+39.40</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.71%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-NSXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 148.609px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/nasdaq-100.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">US 100 Cash
-                                                        CFD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last tv-ticker-item-tape__last--falling">19,837.1</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+138.30</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.70%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FX_IDC-EURUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 144.078px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><span
-                                                        class="pair-ocURKVwI xxxsmall-ocURKVwI tv-ticker-item-tape__icon">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/US.svg"
-                                                            alt="">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/EU.svg"
-                                                            alt="">
-                                                    </span></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">EUR to USD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1.13444</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+0.01</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.51%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-BTCUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 116.953px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Bitcoin</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">96,817</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+282.00</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.29%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-ETHUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 120.391px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Ethereum</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1,825.4</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--down">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">−13.6</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(−0.74%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-SPXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 134.547px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">S&amp;P 500
-                                                        Index</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">5,627.5</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+39.40</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.71%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-NSXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 148.609px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/nasdaq-100.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">US 100 Cash
-                                                        CFD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last tv-ticker-item-tape__last--falling">19,837.1</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+138.30</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.70%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FX_IDC-EURUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 144.078px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><span
-                                                        class="pair-ocURKVwI xxxsmall-ocURKVwI tv-ticker-item-tape__icon">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/US.svg"
-                                                            alt="">
-                                                        <img class="logo-ocURKVwI xxxsmall-ocURKVwI skeleton-ocURKVwI wrapper-TJ9ObuLF"
-                                                            crossorigin=""
-                                                            src="https://s3-symbol-logo.tradingview.com/country/EU.svg"
-                                                            alt="">
-                                                    </span></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">EUR to USD</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1.13444</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+0.01</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.51%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-BTCUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 116.953px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCBTC.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Bitcoin</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">96,817</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+282.00</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.29%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/BITSTAMP-ETHUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 120.391px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/crypto/XTVCETH.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">Ethereum</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">1,825.4</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--down">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">−13.6</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(−0.74%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a><a class="tv-ticker-item-tape tv-ticker-item-tape--compact quote-ticker-inited"
-                                    href="https://www.tradingview.com/symbols/FOREXCOM-SPXUSD/?utm_campaign=ticker-tape&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                                    target="_blank" rel="external noopener" style="width: 134.547px;">
-                                    <div class="tv-ticker-item-tape__border-wrapper">
-                                        <div class="tv-ticker-item-tape__inner-wrapper">
-                                            <div class="tv-ticker-item-tape__symbol">
-                                                <div class="tv-ticker-item-tape__icon-wrapper js-header-icon"><img
-                                                        class="logo-PsAlMQQF xxxsmall-PsAlMQQF tv-ticker-item-tape__icon letter-PsAlMQQF"
-                                                        crossorigin=""
-                                                        src="https://s3-symbol-logo.tradingview.com/indices/s-and-p-500.svg"
-                                                        alt=""></div>
-                                                <div class="tv-ticker-item-tape__short-name-wrapper"><span
-                                                        class="tv-ticker-item-tape__short-name">S&amp;P 500
-                                                        Index</span><span
-                                                        class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
-                                                        title="Market open"><span
-                                                            class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market
-                                                            open</span><span
-                                                            class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span></span>
-                                                </div>
-                                            </div>
-                                            <div class="tv-ticker-item-tape__last-wrapper"><span
-                                                    class="tv-ticker-item-tape__last js-symbol-last">5,627.5</span><span
-                                                    class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
-                                                    title="Real-time">R</span></div>
-                                            <div
-                                                class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction tv-ticker-item-tape__change-wrapper--up">
-                                                <span
-                                                    class="tv-ticker-item-tape__change-abs js-symbol-change">+39.40</span>&nbsp;<span
-                                                    class="tv-ticker-item-tape__change-pt js-symbol-change-pt">(+0.71%)</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </a></div>
+    <LoadingSkeletons v-if="loading"/>
+    <div class="tv-embed-widget-wrapper" v-if="tickers != null">
+      <div class="tv-embed-widget-wrapper__header js-embed-widget-head"></div>
+      <div class="tv-embed-widget-wrapper__body js-embed-widget-body">
+        <div id="widget-ticker-tape-container">
+          <div class="tickerTape-N_kypjt9">
+            <div class="tape-N_kypjt9">
+              <div class="head-N_kypjt9">
+                <a
+                  v-for="item in tickers"
+                  :key="item.ticker"
+                  class="tv-ticker-item-tape quote-ticker-inited tv-ticker-item-tape--compact"
+                  target="_blank"
+                  rel="external noopener"
+                >
+                  <div class="tv-ticker-item-tape__border-wrapper pr-4">
+                    <div class="tv-ticker-item-tape__inner-wrapper">
+                      <div class="tv-ticker-item-tape__symbol">
+                      
+                        <div class="tv-ticker-item-tape__short-name-wrapper">
+                          <span class="tv-ticker-item-tape__short-name">
+                            {{ item.name }}<b class="ml-1">({{ item.ticker }})</b>
+                          </span>
+                          <span
+                            class="js-symbol-session-status tv-market-status tv-market-status--for-ticker-tape tv-market-status--market tv-market-status--market--for-ticker-tape"
+                            title="Market open"
+                          >
+                            <span class="tv-market-status__label tv-market-status__label--for-ticker-tape">Market open</span>
+                            <span class="tv-market-status__dot tv-market-status__dot--for-ticker-tape"></span>
+                          </span>
                         </div>
+                      </div>
+                      <div class="tv-ticker-item-tape__last-wrapper">
+                        <span class="tv-ticker-item-tape__last js-symbol-last">{{ item.ltp }}</span>
+                        <span
+                          class="js-data-mode tv-data-mode tv-data-mode--for-ticker-tape tv-data-mode--realtime tv-data-mode--realtime--for-ticker-tape"
+                          title="Real-time"
+                        >R</span>
+                      </div>
+                      <div
+                        class="tv-ticker-item-tape__change-wrapper js-symbol-change-direction"
+                        :class="item.change < 0 ? 'tv-ticker-item-tape__change-wrapper--down' : 'tv-ticker-item-tape__change-wrapper--up'"
+                      >
+                        <span class="tv-ticker-item-tape__change-abs js-symbol-change">{{ item.change }}</span>&nbsp;
+                        <span class="tv-ticker-item-tape__change-pt js-symbol-change-pt">({{ item.percent }})</span>
+                      </div>
                     </div>
-                </div><span
-                    class="label-dzbd7lyV label-e9c6dycV end-dzbd7lyV top-dzbd7lyV snap-dzbd7lyV js-copyright-label"><a
-                        class="label__link-dzbd7lyV"
-                        href="https://www.tradingview.com?utm_campaign=ticker-tape-logo&amp;utm_medium=widget_new&amp;utm_source=www.tradingview.com"
-                        target="_blank" rel="noopener noreferrer" data-target-type="copyright"
-                        aria-label="Visit TradingView — financial charting platform and trading community"></a><span
-                        class="logoWrap-dzbd7lyV logoWrap-e9c6dycV"><svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 17 10" width="17" height="10" fill="none">
-                            <path fill="#131722" fill-rule="evenodd" clip-rule="evenodd"
-                                d="M13.42 9.04H9.47l3.56-9h3.94l-3.55 9ZM7 .04H0v3h4v6h3v-9Zm2.5 3a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3Z">
-                            </path>
-                        </svg></span><span class="svgTextWrap-e9c6dycV"><svg xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 71 13" width="71" height="13" fill="none">
-                            <path fill="#131722"
-                                d="M53.1 2c0 .57-.49 1.03-1.09 1.03-.58 0-1.07-.46-1.07-1.03 0-.57.5-1.04 1.07-1.04.6 0 1.08.47 1.08 1.04ZM52.9 10h-1.76V3.65h1.76V10ZM26.47 3.03c.6 0 1.08-.46 1.08-1.03 0-.57-.48-1.03-1.08-1.03-.58 0-1.07.46-1.07 1.03 0 .57.49 1.03 1.07 1.03ZM25.57 10h1.74V3.5h-1.74V10ZM4.07 10H2.33V2.74H0V1h6.4v1.74H4.06V10ZM8.14 10 6.39 10V3.49h1.75v1.1c.2-.58.77-1.02 1.46-1.02h.02c.18 0 .35 0 .55.05v1.66a2.33 2.33 0 0 0-.76-.12c-.8 0-1.27.58-1.27 1.57V10ZM30.22 10h-1.75V3.5h1.75v.57c.33-.47.89-.7 1.69-.7 1.48 0 2.37 1.04 2.37 2.59V10h-1.74V6.4c0-.86-.33-1.55-1.03-1.55-.78 0-1.3.54-1.3 1.68V10ZM46.95 10l3.6-9h-2.03L46.2 7.27 43.58 1h-2.03l3.66 9h1.74ZM68.25 10h-1.7l-1.18-3.75L64.21 10h-1.7l-2.08-6.5h1.83l1.19 4.1 1.26-4.1h1.31l1.28 4.1 1.17-4.1h1.84L68.25 10Z">
-                            </path>
-                            <path fill="#131722" fill-rule="evenodd" clip-rule="evenodd"
-                                d="M13.32 10.02c.88 0 1.5-.44 1.79-.85V10h1.79V3.5H15.1v.7a2.2 2.2 0 0 0-1.8-.85c-1.7 0-3 1.54-3 3.34 0 1.8 1.3 3.33 3 3.33Zm.37-1.6c-.97 0-1.61-.72-1.61-1.73s.64-1.74 1.6-1.74c.98 0 1.62.73 1.62 1.74 0 1-.64 1.74-1.61 1.74ZM22.66 9.17c-.3.4-.9.85-1.79.85-1.7 0-3-1.53-3-3.33s1.3-3.34 3-3.34c.88 0 1.5.45 1.8.86V1h1.74v9h-1.75v-.83Zm-3.03-2.48c0 1 .64 1.74 1.61 1.74.97 0 1.61-.73 1.61-1.74s-.64-1.74-1.6-1.74c-.98 0-1.62.73-1.62 1.74ZM38.48 12.68c1.96 0 3.42-1 3.42-3.3V3.5h-1.8v.72a2.1 2.1 0 0 0-1.78-.86c-1.68 0-3.02 1.43-3.02 3.24 0 1.79 1.34 3.3 3.02 3.3a2.2 2.2 0 0 0 1.78-.93v.44c0 1.02-.6 1.75-1.64 1.75-.72 0-1.43-.24-2-.8l-.95 1.31c.72.7 1.86 1.02 2.97 1.02Zm.2-4.46a1.6 1.6 0 0 1-1.62-1.63c0-.99.75-1.64 1.63-1.64.88 0 1.62.65 1.62 1.64a1.6 1.6 0 0 1-1.62 1.63ZM60.3 8.56A3.47 3.47 0 0 1 57.35 10c-1.9 0-3.39-1.31-3.39-3.33 0-1.9 1.42-3.34 3.37-3.34 1.67 0 3.14 1.06 3.14 3.15v.09c0 .15 0 .35-.02.56h-4.79c.1.86.86 1.28 1.7 1.28.81 0 1.36-.36 1.65-.81l1.3.97Zm-3.04-3.8c-.65 0-1.38.34-1.54 1.12h2.99c-.15-.77-.8-1.11-1.45-1.11Z">
-                            </path>
-                        </svg></span></span>
+                  </div>
+                </a>
+              </div>
             </div>
+          </div>
         </div>
-
-      
-        <div id="tooltip-root-element"></div>
-    </body>
-</template>
-
-
+      </div>
+    </div>
+  </template>
+  
 
 <style scoped>
 /*! CSS Used from: https://www.tradingview-widget.com/static/bundles/embed/64828.35532bec9edbf525f4d8.css */
@@ -1130,7 +657,7 @@ html[data-theme="dark"] .label-e9c6dycV .svgTextWrap-e9c6dycV svg path {
 
 /*! CSS Used from: Embedded */
 .tape-N_kypjt9 {
-    animation-duration: 16.6145s;
+    animation-duration: 25s;
     animation-name: ticker-tape-scroll--FS6T;
 }
 

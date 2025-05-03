@@ -1,0 +1,15 @@
+#nepse_app_content > div:nth-child(1) {
+    display: none !important;
+}
+
+#nepse_app_content > div:nth-child(2) {
+    display: none !important;
+}
+
+.footer_container {
+    display: none !important;
+}
+
+body {
+    background: none !important;
+}

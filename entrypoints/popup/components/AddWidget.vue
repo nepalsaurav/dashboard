@@ -29,10 +29,20 @@ function setWidget(selected, widgetType) {
             return
         }
     }
-    if (selected !== "") {
+    if (selected !== "" && selected !== undefined) {
         options.selected = selected
-        options.widgetTitle = `${options.widgetTitle} → ${selected}`
-        
+
+        if (options.type === "google_calendar") {
+            options.widgetTitle = `${options.widgetTitle} → Calendar`
+        }
+        else if (options.type === "spotify_playlist") {
+            options.widgetTitle = `${options.widgetTitle} → Spotify`
+        }
+        else {
+            options.widgetTitle = `${options.widgetTitle} → ${selected}`
+        }
+
+
     }
     const id = crypto.randomUUID()
     options.i = id
@@ -71,7 +81,8 @@ function setWidget(selected, widgetType) {
                                     </option>
                                 </datalist>
                             </div>
-                            <button class="button is-primary is-small ml-auto" @click="setWidget(selected[item.type], item.type)">
+                            <button class="button is-primary is-small ml-auto"
+                                @click="setWidget(selected[item.type], item.type)">
                                 <AddIcons /> Add
                             </button>
                         </div>
