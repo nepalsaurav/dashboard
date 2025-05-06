@@ -1,6 +1,6 @@
 {
-  "name": "wxt-vue-starter",
-  "description": "manifest.json description",
+  "name": "dashboard_app",
+  "description": "Dashboard app, which provides widget to add in your database",
   "private": true,
   "version": "0.0.0",
   "type": "module",
@@ -16,14 +16,20 @@
   },
   "dependencies": {
     "@vueuse/core": "^13.1.0",
+    "bootstrap-icons": "^1.12.1",
     "bulma": "^1.0.4",
+    "cheerio": "^1.0.0",
+    "fast-xml-parser": "^5.2.1",
     "localforage": "^1.10.0",
+    "lucide-vue-next": "^0.507.0",
+    "numeral": "^2.0.6",
     "pinia": "^3.0.2",
     "vue": "^3.5.13",
     "vue-grid-layout": "^2.4.0",
     "vue-grid-layout-v3": "^3.1.2",
     "vue-router": "4",
-    "vue3-select-component": "^0.11.7"
+    "vue3-select-component": "^0.11.7",
+    "webext-bridge": "^6.0.1"
   },
   "devDependencies": {
     "@wxt-dev/module-vue": "^1.0.2",

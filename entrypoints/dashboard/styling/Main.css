@@ -1,0 +1,81 @@
+@import "./Theme.css";
+
+
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap');
+
+body {
+    background: var(--bg-color) !important;
+    font-family: -apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif;
+}
+
+
+html {
+    background: var(--bg-color) !important;
+}
+
+.navbar {
+    background: var(--bg-color) !important;
+    width: 100vw;
+    border-bottom: 1px solid var(--border-color);
+    color: var(--header-text-color);
+    background: var(--header-bg);
+    padding-right: 15px;
+    font-size: 12px;
+    height: 30px;
+}
+
+
+
+.navbar button {
+    background: inherit !important;
+    height: 25px;
+}
+
+
+.menu {
+
+    background: var(--bg-color) !important;
+
+    padding-top: 35px;
+    top: 0;
+    border-right: 1px solid var(--border-color);
+}
+
+
+body.has-navbar-fixed-top {
+    padding-top: 30px !important;
+}
+
+
+.icons svg {
+    height: 13px !important;
+    width: 13px !important;
+}
+
+
+.router-link-exact-active {
+    background: var(--coolYellow) !important;
+    color: #000 !important;
+}
+
+
+
+
+
+
+.dashboard_button .dashboard_delete_button {
+    position: absolute;
+    margin-left: 74px;
+    background: red;
+    padding: 2px !important;
+    width: 30px;
+    height: 30px;
+    text-align: center !important;
+    display: none;
+    
+}
+
+.dashboard_button:hover .dashboard_delete_button,
+.dashboard_delete_button:hover {
+  display: block;
+}

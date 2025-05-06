@@ -14,6 +14,7 @@ export default defineContentScript({
             document.head.appendChild(style)
             // change theme
             const theme = await storage.getItem("local:theme")
+            console.log(theme)
             document.body.style.display = "block"
             
 
