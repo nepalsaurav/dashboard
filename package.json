@@ -15,6 +15,7 @@
     "postinstall": "wxt prepare"
   },
   "dependencies": {
+    "@mozilla/readability": "^0.6.0",
     "@vueuse/core": "^13.1.0",
     "bootstrap-icons": "^1.12.1",
     "bulma": "^1.0.4",

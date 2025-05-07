@@ -25,6 +25,7 @@ import GoogleCalendar from "./Widgets/Calendar/GoogleCalendar.vue";
 import SpotifyPlaylist from "./Widgets/Music/SpotifyPlaylist.vue";
 import HeatMap from "./Widgets/chart/HeatMap.vue";
 import IndexWatch from "./Widgets/Ticker/IndexWatch.vue";
+import NewsReadingModal from "./Widgets/News/NewsReadingModal.vue";
 
 const { isFullscreen } = useFullscreen()
 const route = useRoute()
@@ -65,7 +66,7 @@ function deleteWidget(item) {
 
 <template>
     <Headers />
-
+    <NewsReadingModal />
     <div class="is-flex">
         <div v-if="!isFullscreen">
             <SideBar />
